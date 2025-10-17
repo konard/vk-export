@@ -26,9 +26,28 @@ let targetPath = options.target || path.join(path.dirname(sourcePath), `${path.b
 // console.log(sourcePath);
 // console.log(targetPath);
 
-var iconv = new Iconv('cp1251', 'utf-8');
-const encoded = fs.readFileSync(sourcePath);
-const decoded = iconv.convert(encoded).toString();
+// Try to read and decode the file with error handling
+let decoded;
+try {
+  const encoded = fs.readFileSync(sourcePath);
+
+  // Try cp1251 first (VK's default encoding)
+  try {
+    var iconv = new Iconv('cp1251', 'utf-8');
+    decoded = iconv.convert(encoded).toString();
+  } catch (encodingError) {
+    if (encodingError.code === 'EILSEQ') {
+      // If cp1251 fails, try UTF-8 directly
+      console.warn('Warning: cp1251 decoding failed, trying UTF-8...');
+      decoded = encoded.toString('utf-8');
+    } else {
+      throw encodingError;
+    }
+  }
+} catch (error) {
+  console.error(`Error reading file ${sourcePath}:`, error.message);
+  process.exit(1);
+}
 
 const dom = new JSDOM(decoded);
 const $ = require("jquery")(dom.window);

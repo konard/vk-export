@@ -1,0 +1,18 @@
+[
+  {
+    "author": "John Doe",
+    "date": "2024-01-15T22:30:45.000+03:00",
+    "isEdited": false,
+    "text": "Hello World!"
+  },
+  {
+    "author": "Jane Smith",
+    "date": "2024-01-16T11:45:30.000+03:00",
+    "isEdited": true,
+    "attachment": {
+      "description": "Photo description",
+      "link": "https://example.com/photo.jpg"
+    },
+    "text": "<div class=\"attachment\">\n      <div class=\"attachment__description\">Photo description</div>\n      <a class=\"attachment__link\" href=\"https://example.com/photo.jpg\">Photo</a>\n    </div>\n    Message with attachment"
+  }
+]
